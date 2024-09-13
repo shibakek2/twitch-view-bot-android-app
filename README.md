@@ -47,4 +47,4 @@ Contributions are welcome! If you have suggestions or improvements.
 
 ## Contact
 
-For further information, contact the project maintainer at support@cometbot.info.
+For further information, contact me at support@cometbot.info.
