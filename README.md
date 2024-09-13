@@ -1,4 +1,4 @@
-# Twitch Live View Bot Android APK
+#Android twitch view bot APK
 
 ## Overview
 
