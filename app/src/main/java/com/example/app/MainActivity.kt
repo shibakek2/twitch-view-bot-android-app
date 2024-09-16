@@ -7,6 +7,7 @@ import androidx.activity.enableEdgeToEdge
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
 import kotlinx.coroutines.delay
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.runtime.Composable
@@ -54,7 +55,7 @@ class MainActivity : ComponentActivity() {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
 
-        val currentVersion = "2.0"
+        val currentVersion = "2.1"
         lifecycleScope.launch {
 
             val updateAvailable = checkForUpdate(currentVersion, this@MainActivity)
@@ -130,7 +131,7 @@ fun LoginScreen(navController: NavHostController, onLoginSuccess: () -> Unit) {
         Spacer(modifier = Modifier.height(16.dp))
         Button(
             onClick = {
-                val intent = Intent(Intent.ACTION_VIEW, Uri.parse("https://discord.gg/kws47CDsd8"))
+                val intent = Intent(Intent.ACTION_VIEW, Uri.parse("https://discord.gg/wRGH6aZstz"))
                 context.startActivity(intent)
             },
             modifier = Modifier.fillMaxWidth()
@@ -266,9 +267,6 @@ fun MainScreen(isLoggedIn: Boolean, modifier: Modifier = Modifier) {
     var amount by remember { mutableStateOf("") }
     var errorMessage by remember { mutableStateOf<String?>(null) }
     var successMessage by remember { mutableStateOf<String?>(null) }
-    var isButtonEnabled by remember { mutableStateOf(true) }
-    var lastButtonClickTime by remember { mutableStateOf(0L) }
-    var countdownTime by remember { mutableStateOf(0) }
     var recentChannels by remember { mutableStateOf<List<Pair<String, String>>>(emptyList()) }
 
     val clearRecentChannelsHandler: () -> Unit = {
@@ -277,20 +275,9 @@ fun MainScreen(isLoggedIn: Boolean, modifier: Modifier = Modifier) {
             recentChannels = loadRecentChannels(context)
         }
     }
+
     LaunchedEffect(Unit) {
         recentChannels = loadRecentChannels(context)
-    }
-    val currentTime = System.currentTimeMillis()
-    val cooldownElapsed = (currentTime - lastButtonClickTime) >= 60 * 1000
-    LaunchedEffect(isButtonEnabled) {
-        if (!isButtonEnabled) {
-            countdownTime = ((60 * 1000 - (currentTime - lastButtonClickTime)) / 1000).toInt()
-            while (countdownTime > 0) {
-                delay(1000)
-                countdownTime--
-            }
-            isButtonEnabled = true
-        }
     }
 
     if (!isLoggedIn) {
@@ -305,21 +292,25 @@ fun MainScreen(isLoggedIn: Boolean, modifier: Modifier = Modifier) {
             Text(
                 text = "Login to continue\n\nJoin the discord for the password",
                 style = MaterialTheme.typography.headlineMedium,
-                color = Color.Red
+                color = Color.Red,
+                textAlign = TextAlign.Center
             )
+            Spacer(modifier = Modifier.height(16.dp))
             Button(
                 onClick = {
-                    val intent = Intent(Intent.ACTION_VIEW, Uri.parse("https://discord.gg/kws47CDsd8"))
+                    val intent = Intent(Intent.ACTION_VIEW, Uri.parse("https://discord.gg/wRGH6aZstz"))
                     context.startActivity(intent)
                 },
                 modifier = Modifier.fillMaxWidth()
             ) {
                 Text("Discord")
             }
+            Spacer(modifier = Modifier.height(16.dp))
             Text(
                 text = "After you get the password restart the app to login",
-                style = MaterialTheme.typography.headlineMedium,
-                color = Color.Black
+                style = MaterialTheme.typography.bodyMedium,
+                color = Color.Black,
+                textAlign = TextAlign.Center
             )
         }
     } else {
@@ -327,15 +318,15 @@ fun MainScreen(isLoggedIn: Boolean, modifier: Modifier = Modifier) {
             modifier = modifier
                 .fillMaxSize()
                 .padding(16.dp)
-                .background(color = Color(0xFFF4F4F4)),
-            verticalArrangement = Arrangement.Center,
+                .background(color = Color.White),
+            verticalArrangement = Arrangement.Top,
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
             Text(
-                text = "Twitch Live View Bot",
+                text = "Free 30 mins Live View Bot",
                 style = MaterialTheme.typography.headlineLarge,
                 color = Color(0xFF007BFF),
-                modifier = Modifier.padding(bottom = 24.dp)
+                modifier = Modifier.padding(top = 24.dp, bottom = 16.dp)
             )
 
             OutlinedTextField(
@@ -344,7 +335,7 @@ fun MainScreen(isLoggedIn: Boolean, modifier: Modifier = Modifier) {
                 label = { Text("Channel") },
                 modifier = Modifier
                     .fillMaxWidth()
-                    .padding(horizontal = 32.dp)
+                    .padding(horizontal = 16.dp)
             )
 
             Spacer(modifier = Modifier.height(16.dp))
@@ -355,7 +346,7 @@ fun MainScreen(isLoggedIn: Boolean, modifier: Modifier = Modifier) {
                 label = { Text("Amount") },
                 modifier = Modifier
                     .fillMaxWidth()
-                    .padding(horizontal = 32.dp),
+                    .padding(horizontal = 16.dp),
                 keyboardOptions = KeyboardOptions.Default.copy(keyboardType = KeyboardType.Number)
             )
 
@@ -365,21 +356,14 @@ fun MainScreen(isLoggedIn: Boolean, modifier: Modifier = Modifier) {
                 onClick = {
                     coroutineScope.launch {
                         try {
-                            if (cooldownElapsed) {
-                                val response = sendViewerRequest(channel, amount)
-                                successMessage = response
-                                errorMessage = null
-                                lastButtonClickTime = System.currentTimeMillis()
-                                isButtonEnabled = false
-                                val updatedChannels = recentChannels.toMutableSet().apply {
-                                    add(Pair(channel, amount))
-                                }.toList()
-                                saveRecentChannels(context, updatedChannels)
-                                recentChannels = updatedChannels
-                            } else {
-                                errorMessage = "Please wait before sending more viewers."
-                                successMessage = null
-                            }
+                            val response = sendViewerRequest(channel, amount)
+                            successMessage = response
+                            errorMessage = null
+                            val updatedChannels = recentChannels.toMutableSet().apply {
+                                add(Pair(channel, amount))
+                            }.toList()
+                            saveRecentChannels(context, updatedChannels)
+                            recentChannels = updatedChannels
                         } catch (e: Exception) {
                             errorMessage = e.message
                             successMessage = null
@@ -388,14 +372,13 @@ fun MainScreen(isLoggedIn: Boolean, modifier: Modifier = Modifier) {
                 },
                 modifier = Modifier
                     .fillMaxWidth()
-                    .padding(horizontal = 32.dp),
-                enabled = isButtonEnabled
+                    .padding(horizontal = 16.dp)
             ) {
                 Text("Send Viewers")
             }
 
             successMessage?.let {
-                Spacer(modifier = Modifier.height(24.dp))
+                Spacer(modifier = Modifier.height(16.dp))
                 Text(
                     text = it,
                     color = Color.Green,
@@ -404,17 +387,22 @@ fun MainScreen(isLoggedIn: Boolean, modifier: Modifier = Modifier) {
             }
 
             errorMessage?.let {
-                Spacer(modifier = Modifier.height(24.dp))
+                Spacer(modifier = Modifier.height(16.dp))
                 Text(
                     text = it,
                     color = Color.Red,
                     style = MaterialTheme.typography.bodyMedium
                 )
             }
+
             Spacer(modifier = Modifier.height(24.dp))
             Text("Recent Channels:", style = MaterialTheme.typography.headlineMedium)
 
-            LazyColumn {
+            LazyColumn(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(horizontal = 16.dp)
+            ) {
                 items(recentChannels) { (recentChannel, sentAmount) ->
                     Text(
                         text = "$recentChannel - Viewers Sent: $sentAmount",
@@ -429,13 +417,14 @@ fun MainScreen(isLoggedIn: Boolean, modifier: Modifier = Modifier) {
                 onClick = clearRecentChannelsHandler,
                 modifier = Modifier
                     .fillMaxWidth()
-                    .padding(horizontal = 32.dp)
+                    .padding(horizontal = 16.dp)
             ) {
                 Text("Clear Recent Channels")
             }
         }
     }
 }
+
 
 fun loadRecentChannels(context: Context): List<Pair<String, String>> {
     return try {
