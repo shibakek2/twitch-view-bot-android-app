@@ -13,7 +13,6 @@ fun SettingsScreen() {
     var sliderValue by remember { mutableStateOf(0f) }
     var switchChecked by remember { mutableStateOf(false) }
 
-    // Map the slider value to a color from white to black
     val backgroundColor = Color(
         red = (255 * (1 - sliderValue / 100)).toInt(),
         green = (255 * (1 - sliderValue / 100)).toInt(),
@@ -24,18 +23,18 @@ fun SettingsScreen() {
         modifier = Modifier
             .fillMaxSize()
             .padding(16.dp)
-            .background(backgroundColor),  // Apply the dynamic background color
+            .background(backgroundColor),  
         verticalArrangement = Arrangement.Center,
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
         Text(
-            text = "Settings",
+            text = "Settings (JUST A TEST)",
             style = MaterialTheme.typography.headlineMedium,
             color = Color(0xFF007BFF),
             modifier = Modifier.padding(bottom = 16.dp)
         )
 
-        // Slider
+        
         Text(text = "Slider Value: ${sliderValue.toInt()}", modifier = Modifier.padding(bottom = 16.dp))
         Slider(
             value = sliderValue,
@@ -44,7 +43,7 @@ fun SettingsScreen() {
             modifier = Modifier.padding(bottom = 24.dp)
         )
 
-        // Switch
+        
         Row(
             verticalAlignment = Alignment.CenterVertically,
             modifier = Modifier.padding(bottom = 24.dp)
@@ -56,11 +55,11 @@ fun SettingsScreen() {
             )
         }
 
-        // Buttons
-        Button(onClick = { /* Handle Test Button Click */ }, modifier = Modifier.padding(bottom = 16.dp)) {
+        
+        Button(onClick = { /*  */ }, modifier = Modifier.padding(bottom = 16.dp)) {
             Text("Test Button 1")
         }
-        Button(onClick = { /* Handle Test Button Click */ }) {
+        Button(onClick = { /*  */ }) {
             Text("Test Button 2")
         }
     }
