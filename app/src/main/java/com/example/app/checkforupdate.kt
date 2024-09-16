@@ -41,7 +41,7 @@
     }
 
     private fun openUpdateUrl(context: Context) {
-        val intent = Intent(Intent.ACTION_VIEW, Uri.parse("https://discord.gg/kws47CDsd8"))
+        val intent = Intent(Intent.ACTION_VIEW, Uri.parse("https://discord.gg/wRGH6aZstz"))
         intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK)
         context.startActivity(intent)
     }
