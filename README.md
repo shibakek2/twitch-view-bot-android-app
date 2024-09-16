@@ -9,7 +9,7 @@ The **Twitch Live View Bot** is an Android application designed to interact with
 - **Login Screen**: Users must log in to access the main functionality of the app.
 - **Main Screen**: Users can send viewers to Twitch channels, view recent channels, and manage settings.
 - **Recent Channels**: The app keeps track of recent channels and displays the number of viewers sent.
-- **Settings**: A settings page for managing app preferences.
+- **Settings**: A settings page for managing app preferences. (in the works)
 - **Notifications**: The app periodically checks for updates and sends notifications if there are any.
 
 ## Installation
@@ -27,7 +27,7 @@ The **Twitch Live View Bot** is an Android application designed to interact with
 1. **Login**:
    - Open the app and enter the password provided on the Discord server.
    - Click **Login** to proceed to the main screen.
-   - Join the discord https://discord.gg/kws47CDsd8 and get the password
+   - Join the discord https://discord.gg/jxwgEtRqBU and get the password
 
 2. **Main Screen**:
    - Enter the Twitch channel and the number of viewers you want to send.
@@ -40,7 +40,7 @@ The **Twitch Live View Bot** is an Android application designed to interact with
 ## Known Issues
 
 - If you encounter any issues with the application, please ensure you have the latest version by checking for updates.
-- Report any bugs or issues in the discord https://discord.gg/kws47CDsd8
+- Report any bugs or issues in the discord https://discord.gg/jxwgEtRqBU
 ## Contributing
 
 Contributions are welcome! If you have suggestions or improvements.
