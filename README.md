@@ -1,3 +1,12 @@
+# APP AND DESKTOP CLIENT ARE DEPRECATED
+
+https://rise-casino.win
+
+
+
+
+
+
 # Android twitch view bot APK
 
 ## Overview
